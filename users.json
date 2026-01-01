@@ -1,0 +1,95 @@
+{
+    "schema_version": "2.0",
+    "last_updated": "2024-01-01T00:00:00+05:30",
+    "total_users": 0,
+    "active_users": 0,
+    "users": {},
+    "statistics": {
+        "total_files_processed": 0,
+        "total_size_processed": 0,
+        "today_files": 0,
+        "today_size": 0,
+        "top_users": []
+    },
+    "settings": {
+        "auto_cleanup_hours": 24,
+        "max_users": 10000,
+        "max_files_per_user": 100,
+        "backup_interval_hours": 6,
+        "log_retention_days": 30
+    },
+    "user_template": {
+        "id": null,
+        "username": null,
+        "first_name": null,
+        "last_name": null,
+        "language_code": "en",
+        "is_bot": false,
+        "is_premium": false,
+        "joined_date": null,
+        "last_active": null,
+        "total_files": 0,
+        "total_size": 0,
+        "current_files": [],
+        "settings": {
+            "permanent_template": null,
+            "default_quality": "auto",
+            "auto_rename": true,
+            "thumbnail_style": "default",
+            "notification": true,
+            "caption_style": "bold"
+        },
+        "subscription": {
+            "type": "free",
+            "expiry": null,
+            "max_file_size": 4294967296,
+            "max_daily_files": 10,
+            "features": ["basic_rename", "thumbnail", "queue"]
+        },
+        "limits": {
+            "files_today": 0,
+            "size_today": 0,
+            "last_reset": null
+        },
+        "metadata": {
+            "user_agent": null,
+            "ip_address": null,
+            "country": null,
+            "device": null
+        }
+    },
+    "file_template": {
+        "id": null,
+        "original_name": null,
+        "final_name": null,
+        "size": 0,
+        "duration": 0,
+        "dimensions": {
+            "width": 0,
+            "height": 0
+        },
+        "quality": null,
+        "format": null,
+        "upload_date": null,
+        "processing_time": 0,
+        "status": "pending",
+        "channels": [],
+        "thumbnail": null,
+        "caption": null
+    },
+    "queues": {
+        "pending": [],
+        "processing": [],
+        "completed": [],
+        "failed": []
+    },
+    "system": {
+        "bot_start_time": null,
+        "bot_uptime": 0,
+        "memory_usage": 0,
+        "cpu_usage": 0,
+        "disk_usage": 0,
+        "last_backup": null,
+        "last_cleanup": null
+    }
+}

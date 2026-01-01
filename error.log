@@ -1,0 +1,18 @@
+# ===== ERROR LOG TEMPLATE =====
+# This file will be populated automatically
+# Created: 2024-01-01 00:00:00
+# Bot: Video Renamer Bot v2.0
+# ==============================
+
+[2024-01-01 00:00:00] INFO: Bot started successfully
+[2024-01-01 00:00:00] INFO: Directories created: downloads, thumbs, logs
+[2024-01-01 00:00:00] INFO: Loading environment variables
+[2024-01-01 00:00:00] INFO: API_ID: 38609654
+[2024-01-01 00:00:00] INFO: BOT_USERNAME: FourGBRenamerBot
+[2024-01-01 00:00:00] INFO: Main Channel: @EntertainmentTadka786
+[2024-01-01 00:00:00] INFO: Max file size: 4GB
+
+# ===== LOG FORMAT =====
+# [TIMESTAMP] [LEVEL] Message
+# Levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+# ======================
