@@ -1,7 +1,7 @@
-# ===== MULTI-STAGE BUILD =====
-FROM php:8.2-apache AS builder
+# ===== BASE IMAGE =====
+FROM php:8.2-apache
 
-# Install system dependencies
+# ===== INSTALL SYSTEM DEPENDENCIES =====
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -13,10 +13,12 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     libmagickwand-dev \
     libzip-dev \
+    wget \
+    nano \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# ===== INSTALL PHP EXTENSIONS =====
 RUN docker-php-ext-install \
     pdo_mysql \
     mbstring \
@@ -29,63 +31,40 @@ RUN docker-php-ext-install \
     && pecl install imagick \
     && docker-php-ext-enable imagick
 
-# Install Composer
+# ===== INSTALL COMPOSER =====
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# ===== SET WORKING DIRECTORY =====
 WORKDIR /var/www/html
 
-# Copy application files
+# ===== COPY APPLICATION FILES =====
 COPY . .
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader
+# ===== INSTALL DEPENDENCIES =====
+# First, generate composer.json if missing
+RUN if [ ! -f composer.json ]; then \
+    echo '{"name":"video-renamer-bot","require":{"danog/madelineproto":"^8.0","vlucas/phpdotenv":"^5.5"}}' > composer.json; \
+    fi
 
-# Set permissions
+# Install without scripts to avoid errors
+RUN composer install --no-dev --no-scripts --optimize-autoloader
+
+# ===== SET PERMISSIONS =====
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && mkdir -p downloads thumbs logs \
     && chmod -R 777 downloads thumbs logs
 
-# Enable Apache modules
-RUN a2enmod rewrite headers expires deflate
-
-# ===== PRODUCTION IMAGE =====
-FROM php:8.2-apache
-
-# Copy from builder
-COPY --from=builder /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
-COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
-COPY --from=builder /var/www/html /var/www/html
-COPY --from=builder /usr/bin/composer /usr/bin/composer
-
-# Install runtime dependencies only
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    libmagickwand-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set up Apache
+# ===== APACHE CONFIGURATION =====
 RUN a2enmod rewrite headers expires deflate \
-    && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
-    && sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/default-ssl.conf
+    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Create non-root user
-RUN useradd -m -u 1000 -s /bin/bash appuser \
-    && chown -R appuser:appuser /var/www/html
-
-# Switch to non-root user
-USER appuser
-
-# Health check
+# ===== HEALTH CHECK =====
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/health || exit 1
+    CMD curl -f http://localhost/ || exit 1
 
-# Expose port
+# ===== EXPOSE PORT =====
 EXPOSE 80
-EXPOSE 443
 
-# Start Apache
+# ===== START APACHE =====
 CMD ["apache2-foreground"]
