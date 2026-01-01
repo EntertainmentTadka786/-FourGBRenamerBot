@@ -34,18 +34,10 @@
         "guzzlehttp/guzzle": "^7.5",
         "ramsey/uuid": "^4.0",
         "symfony/process": "^6.0",
-        "symfony/console": "^6.0",
-        "illuminate/database": "^10.0",
-        "illuminate/redis": "^10.0",
-        "predis/predis": "^2.0",
-        "intervention/image": "^3.0"
+        "symfony/console": "^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0",
-        "mockery/mockery": "^1.5",
-        "fakerphp/faker": "^1.20",
-        "squizlabs/php_codesniffer": "^3.7",
-        "phpstan/phpstan": "^1.10"
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "psr-4": {
@@ -61,53 +53,24 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
-        ],
         "start": "php -S localhost:8000 -t public",
         "bot": "php index.php",
-        "worker": "php worker.php",
         "test": "phpunit",
-        "analyse": "phpstan analyse src tests",
-        "lint": "phpcs --standard=PSR12 src tests",
-        "format": "phpcbf --standard=PSR12 src tests"
+        "post-autoload-dump": []
     },
     "scripts-descriptions": {
         "start": "Start development server",
         "bot": "Run Telegram bot",
-        "worker": "Run background worker",
-        "test": "Run PHPUnit tests",
-        "analyse": "Run PHPStan analysis",
-        "lint": "Check code style",
-        "format": "Fix code style"
+        "test": "Run tests"
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "composer/installers": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "danog/madelineproto": true
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packagist.org"
-        }
-    ],
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
-    }
+    "prefer-stable": true
 }
